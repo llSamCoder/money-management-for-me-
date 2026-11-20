@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAMEER'S MONEY MANAGER | Personal Finance Control Center</title>
+  <meta name="description" content="SAMEER'S MONEY MANAGER - Personal Finance Control Center. Your Money. Your Control. Your Future.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%230A1329' stroke='%23D4AF37' stroke-width='4'/><text x='50' y='66' font-size='48' font-family='sans-serif' font-weight='bold' fill='%23D4AF37' text-anchor='middle'>S</text></svg>">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Complete self-contained fallback styles to guarantee instant rendering in Google Chrome */
+    :root {
+      --navy-950: #040711;
+      --navy-900: #070D1E;
+      --navy-850: #0A1329;
+      --navy-800: #0F1C3F;
+      --navy-750: #152554;
+      --navy-700: #1E3163;
+      --gold-300: #FDE68A;
+      --gold-400: #F7D070;
+      --gold-500: #D4AF37;
+      --gold-600: #B8860B;
+      --emerald-400: #34D399;
+      --rose-400: #FB7185;
+      --blue-400: #60A5FA;
+      --amber-400: #FBBF24;
+      --purple-400: #C084FC;
+      --slate-100: #F1F5F9;
+      --slate-300: #CBD5E1;
+      --slate-400: #94A3B8;
+      --slate-500: #64748B;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--navy-950);
+      color: var(--slate-100);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+    .text-gold-gradient {
+      background: linear-gradient(135deg, #F9D976 0%, #D4AF37 50%, #B8860B 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .glass-panel {
+      background: rgba(15, 28, 63, 0.75);
+      border: 1px solid rgba(30, 49, 99, 0.8);
+      border-radius: 1rem;
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, #F9D976 0%, #D4AF37 50%, #B8860B 100%);
+      color: #040711;
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.55rem 1rem;
+      border-radius: 0.65rem;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+    .btn-gold:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-secondary {
+      background: var(--navy-800);
+      color: var(--slate-300);
+      border: 1px solid var(--navy-700);
+      font-weight: 600;
+      font-size: 0.75rem;
+      padding: 0.55rem 0.9rem;
+      border-radius: 0.65rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+    .btn-secondary:hover { background: var(--navy-750); color: #fff; border-color: var(--gold-500); }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .badge-gold { background: rgba(212, 175, 55, 0.15); border: 1px solid rgba(212, 175, 55, 0.4); color: var(--gold-400); }
+    .badge-emerald { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: var(--emerald-400); }
+    .badge-rose { background: rgba(244, 63, 94, 0.15); border: 1px solid rgba(244, 63, 94, 0.4); color: var(--rose-400); }
+    .badge-blue { background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.4); color: var(--blue-400); }
+    .grid-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .metric-card {
+      background: rgba(15, 28, 63, 0.7);
+      border: 1px solid var(--navy-700);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      position: relative;
+    }
+    .metric-card.gold-border {
+      border-color: rgba(212, 175, 55, 0.5);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.12);
+    }
+    .metric-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .metric-num {
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: #fff;
+      margin-top: 0.35rem;
+      font-family: ui-monospace, monospace;
+    }
+    .metric-desc {
+      font-size: 0.65rem;
+      color: var(--slate-400);
+      margin-top: 0.35rem;
+    }
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.75rem;
+    }
+    table.data-table th {
+      padding: 0.75rem 0.85rem;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--slate-400);
+      border-bottom: 1px solid var(--navy-700);
+    }
+    table.data-table td {
+      padding: 0.75rem 0.85rem;
+      border-bottom: 1px solid rgba(30, 49, 99, 0.4);
+    }
+    table.data-table tr:hover td { background: rgba(21, 37, 84, 0.4); }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.55rem 0.85rem;
+      border-radius: 0.65rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--slate-400);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+    .sidebar-link:hover { color: #fff; background: rgba(15, 28, 63, 0.7); }
+    .sidebar-link.active {
+      background: linear-gradient(90deg, rgba(212, 175, 55, 0.18) 0%, transparent 100%);
+      color: var(--gold-300);
+      border-left: 3px solid var(--gold-500);
+      font-weight: 700;
+    }
+    /* Modal styles */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 1rem;
+    }
+    .modal-box {
+      background: var(--navy-900);
+      border: 1px solid var(--navy-700);
+      border-radius: 1.25rem;
+      width: 100%;
+      max-width: 520px;
+      padding: 1.5rem;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+      animation: modalFade 0.2s ease-out;
+    }
+    @keyframes modalFade {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .form-ctrl {
+      width: 100%;
+      padding: 0.6rem 0.85rem;
+      border-radius: 0.6rem;
+      background: var(--navy-950);
+      border: 1px solid var(--navy-700);
+      color: #fff;
+      font-size: 0.8rem;
+      outline: none;
+      margin-top: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .form-ctrl:focus { border-color: var(--gold-500); }
+    .form-lbl {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--slate-400);
+    }
+  </style>
+</head>
+<body>
+  <!-- Root Container -->
+  <div id="app" style="display: flex; height: 100vh; width: 100vw; overflow: hidden;">
+    
+    <!-- WELCOME SPLASH SCREEN -->
+    <div id="welcome-splash" style="position: fixed; inset: 0; z-index: 1000; background: #040711; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; text-align: center;">
+      <div style="position: absolute; inset: 0; background: radial-gradient(ellipse at top, #0F1C3F 0%, #040711 75%); pointer-events: none;"></div>
+      
+      <div style="position: relative; z-index: 10; max-width: 500px; width: 100%; display: flex; flex-direction: column; align-items: center;">
+        <!-- Monogram Badge -->
+        <div style="width: 100px; height: 100px; border-radius: 1.75rem; background: linear-gradient(135deg, #0F1C3F 0%, #070D1E 100%); border: 2px solid var(--gold-500); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 35px rgba(212, 175, 55, 0.25); margin-bottom: 1.5rem;">
+          <span class="text-gold-gradient" style="font-size: 3.5rem; font-weight: 900; line-height: 1;">S</span>
+        </div>
+
+        <div class="badge badge-gold" style="margin-bottom: 0.75rem;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #10B981; display: inline-block;"></span>
+          <span>Offline & Online Ready • Secure Wealth Portal</span>
+        </div>
+
+        <h1 style="font-size: 2.2rem; font-weight: 900; text-transform: uppercase; color: #fff; letter-spacing: -0.02em; margin-bottom: 0.35rem;">
+          WELCOME <span class="text-gold-gradient">SAMEER</span>
+        </h1>
+
+        <h2 style="font-size: 1.15rem; font-weight: 800; text-transform: uppercase; color: var(--slate-100); letter-spacing: 0.05em; margin-bottom: 0.25rem;">
+          SAMEER'S MONEY MANAGER
+        </h2>
+        <p style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--slate-400); margin-bottom: 0.75rem;">
+          Personal Finance Control Center
+        </p>
+        <p style="font-size: 0.85rem; font-style: italic; color: var(--gold-300); margin-bottom: 2rem;">
+          "Your Money. Your Control. Your Future."
+        </p>
+
+        <!-- Metrics Preview -->
+        <div style="width: 100%; background: rgba(15, 28, 63, 0.75); border: 1px solid var(--navy-700); border-radius: 1rem; padding: 1rem 1.25rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: left; margin-bottom: 1.75rem;">
+          <div>
+            <p style="font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: var(--slate-400);">Current Net Worth</p>
+            <p id="splash-networth" style="font-size: 1.25rem; font-weight: 800; color: #fff; margin-top: 0.2rem; font-family: ui-monospace, monospace;">₹11,11,550.00</p>
+          </div>
+          <div>
+            <p style="font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: var(--slate-400);">Liquid Balances</p>
+            <p id="splash-liquid" style="font-size: 1.25rem; font-weight: 800; color: var(--emerald-400); margin-top: 0.2rem; font-family: ui-monospace, monospace;">₹2,61,350.00</p>
+          </div>
+        </div>
+
+        <button onclick="dismissWelcomeSplash()" class="btn-gold" style="width: 100%; justify-content: center; padding: 0.85rem; font-size: 0.85rem; border-radius: 0.75rem;">
+          <span>Enter Control Center</span>
+          <span style="font-size: 1.1rem; line-height: 1;">→</span>
+        </button>
+        <p style="font-size: 0.68rem; color: var(--slate-500); margin-top: 1rem;">Exclusively designed & authorized for SAMEER</p>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside id="app-sidebar" style="width: 270px; background: rgba(7, 13, 30, 0.98); border-right: 1px solid var(--navy-700); display: flex; flex-direction: column; flex-shrink: 0; z-index: 50;">
+      <!-- Branding Box -->
+      <div style="padding: 1.25rem; border-bottom: 1px solid var(--navy-700); display: flex; align-items: center; gap: 0.75rem;">
+        <div style="width: 38px; height: 38px; border-radius: 0.65rem; background: var(--navy-800); border: 1px solid var(--gold-500); display: flex; align-items: center; justify-content: center;">
+          <span class="text-gold-gradient" style="font-size: 1.35rem; font-weight: 900;">S</span>
+        </div>
+        <div>
+          <h2 class="text-gold-gradient" style="font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2;">
+            SAMEER'S MONEY
+          </h2>
+          <p style="font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--slate-400);">
+            Control Center
+          </p>
+        </div>
+      </div>
+
+      <!-- Identity Strip -->
+      <div style="padding: 0.75rem 1.25rem; background: rgba(4, 7, 17, 0.6); border-bottom: 1px solid var(--navy-700); display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 0.65rem;">
+          <div style="width: 26px; height: 26px; border-radius: 50%; background: rgba(212, 175, 55, 0.2); border: 1px solid var(--gold-500); display: flex; align-items: center; justify-content: center; font-size: 0.68rem; font-weight: 800; color: var(--gold-400);">
+            SM
+          </div>
+          <div>
+            <p style="font-size: 0.75rem; font-weight: 800; color: #fff; text-transform: uppercase;">SAMEER</p>
+            <p style="font-size: 0.6rem; color: var(--emerald-400); display: flex; align-items: center; gap: 4px;">
+              <span style="width: 5px; height: 5px; border-radius: 50%; background: var(--emerald-400);"></span>
+              Active Session
+            </p>
+          </div>
+        </div>
+        <button onclick="showWelcomeSplash()" title="Replay Welcome Greeting" style="background: none; border: none; color: var(--slate-400); cursor: pointer; padding: 4px;">
+          ✨
+        </button>
+      </div>
+
+      <!-- Sidebar Navigation Menu -->
+      <nav id="sidebar-nav" style="flex: 1; overflow-y: auto; padding: 0.75rem 0.65rem; display: flex; flex-direction: column; gap: 2px;">
+        <p style="font-size: 0.6rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.08em; color: var(--slate-500); padding: 0.5rem 0.6rem 0.2rem;">Overview</p>
+        <button class="sidebar-link active" onclick="switchTab('dashboard')"><span>📊 Dashboard</span></button>
+        <button class="sidebar-link" onclick="switchTab('calendar')"><span>📅 Financial Calendar</span></button>
+        <button class="sidebar-link" onclick="switchTab('transactions')"><span>🧾 All Transactions</span> <span id="badge-tx-count" class="badge badge-gold" style="font-size: 0.6rem; padding: 0.1rem 0.4rem;">7</span></button>
+
+        <p style="font-size: 0.6rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.08em; color: var(--slate-500); padding: 0.8rem 0.6rem 0.2rem;">Cash Flow</p>
+        <button class="sidebar-link" onclick="switchTab('income')"><span>💰 Income Management</span></button>
+        <button class="sidebar-link" onclick="switchTab('expenses')"><span>💳 Expense Management</span></button>
+        <button class="sidebar-link" onclick="switchTab('accounts')"><span>🏦 My Accounts & Cards</span></button>
+        <button class="sidebar-link" onclick="switchTab('transfers')"><span>⇄ Account Transfers</span></button>
+
+        <p style="font-size: 0.6rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.08em; color: var(--slate-500); padding: 0.8rem 0.6rem 0.2rem;">Wealth & Planning</p>
+        <button class="sidebar-link" onclick="switchTab('budget')"><span>🎯 Budget Control</span></button>
+        <button class="sidebar-link" onclick="switchTab('goals')"><span>🏆 Savings Goals</span></button>
+        <button class="sidebar-link" onclick="switchTab('money-given')"><span>🤝 Money Given (Lent)</span></button>
+        <button class="sidebar-link" onclick="switchTab('money-taken')"><span>🤲 Money Taken (Debt)</span></button>
+        <button class="sidebar-link" onclick="switchTab('investments')"><span>📈 Investments & SIPs</span></button>
+        <button class="sidebar-link" onclick="switchTab('recurring')"><span>⏰ Bills & Reminders</span></button>
+
+        <p style="font-size: 0.6rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.08em; color: var(--slate-500); padding: 0.8rem 0.6rem 0.2rem;">Intelligence & System</p>
+        <button class="sidebar-link" onclick="switchTab('reports')"><span>📑 Financial Reports</span></button>
+        <button class="sidebar-link" onclick="switchTab('ai')"><span>🤖 AI Money Assistant</span> <span class="badge badge-gold" style="font-size: 0.55rem; padding: 0.05rem 0.35rem;">AI</span></button>
+        <button class="sidebar-link" onclick="switchTab('settings')"><span>⚙️ Settings & Audit</span></button>
+      </nav>
+
+      <!-- Sidebar Tagline Footer -->
+      <div style="padding: 0.85rem 1rem; border-top: 1px solid var(--navy-700); background: #040711; text-align: center;">
+        <p style="font-size: 0.68rem; font-weight: 700; color: var(--gold-400);">"Your Money. Your Control. Your Future."</p>
+        <p style="font-size: 0.58rem; color: var(--slate-500); text-transform: uppercase; margin-top: 0.2rem;">Exclusive for SAMEER</p>
+      </div>
+    </aside>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <main style="flex: 1; display: flex; flex-direction: column; overflow: hidden; background: #040711;">
+      <!-- Top Header Bar -->
+      <header style="height: 60px; padding: 0 1.5rem; background: rgba(7, 13, 30, 0.95); border-bottom: 1px solid var(--navy-700); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
+        <div style="display: flex; align-items: center; gap: 0.85rem;">
+          <h2 id="header-page-title" style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: #fff; letter-spacing: 0.05em;">
+            DASHBOARD
+          </h2>
+          <span style="color: var(--slate-500);">•</span>
+          <span style="font-size: 0.72rem; color: var(--slate-400);">SAMEER'S MONEY MANAGER</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <!-- Online/Offline Indicator Badge -->
+          <div id="status-pill" class="badge badge-emerald">
+            <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--emerald-400);"></span>
+            <span id="status-text">Chrome Ready (Offline + Online)</span>
+          </div>
+
+          <!-- Quick Add Entry Button -->
+          <button onclick="openModal('add-tx')" class="btn-gold">
+            <span>+ Add Entry</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Dynamic Active View Area -->
+      <section id="main-content" style="flex: 1; overflow-y: auto; padding: 1.5rem;">
+        <!-- Injected via JavaScript -->
+      </section>
+    </main>
+
+  </div>
+
+  <!-- MODAL CONTAINER -->
+  <div id="modal-container" style="display: none;"></div>
+
+  <!-- SELF-CONTAINED JAVASCRIPT APPLICATION -->
+  <script>
+    // ------------------------------------------------------------------------
+    // FINANCIAL STATE MANAGEMENT WITH 100% OFFLINE PERSISTENCE
+    // ------------------------------------------------------------------------
+    const formatINR = (amt) => {
+      const num = Number(amt) || 0;
+      const isNeg = num < 0;
+      const abs = Math.abs(num);
+      const parts = abs.toFixed(2).split('.');
+      let intP = parts[0];
+      const decP = parts[1];
+      if (intP.length > 3) {
+        const last3 = intP.substring(intP.length - 3);
+        const rest = intP.substring(0, intP.length - 3);
+        intP = rest.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + ',' + last3;
+      }
+      return (isNeg ? '-₹' : '₹') + intP + '.' + decP;
+    };
+
+    const DEFAULT_DATA = {
+      accounts: [
+        { id: 1, name: 'HDFC Salary Account', type: 'BANK', institution: 'HDFC Bank', last4: '4821', balance: 142500, creditLimit: 0 },
+        { id: 2, name: 'SBI Savings Account', type: 'BANK', institution: 'State Bank of India', last4: '9103', balance: 68200, creditLimit: 0 },
+        { id: 3, name: 'ICICI Direct Account', type: 'BANK', institution: 'ICICI Bank', last4: '3341', balance: 35000, creditLimit: 0 },
+        { id: 4, name: 'Cash Wallet', type: 'CASH', institution: 'Physical Cash', last4: '', balance: 12400, creditLimit: 0 },
+        { id: 5, name: 'Google Pay UPI', type: 'UPI', institution: 'Google Pay (HDFC)', last4: '4821', balance: 0, creditLimit: 0 },
+        { id: 6, name: 'PhonePe UPI', type: 'UPI', institution: 'PhonePe (SBI)', last4: '9103', balance: 0, creditLimit: 0 },
+        { id: 7, name: 'Paytm Wallet', type: 'WALLET', institution: 'Paytm', last4: '8872', balance: 3250, creditLimit: 0 },
+        { id: 8, name: 'HDFC Regalia Gold Credit Card', type: 'CREDIT_CARD', institution: 'HDFC Bank', last4: '6142', balance: 18450, creditLimit: 300000 }
+      ],
+      categories: [
+        { id: 1, name: 'Salary', type: 'INCOME', color: '#10B981', budget: 0 },
+        { id: 2, name: 'Bonus', type: 'INCOME', color: '#34D399', budget: 0 },
+        { id: 3, name: 'Freelancing', type: 'INCOME', color: '#059669', budget: 0 },
+        { id: 4, name: 'Business Income', type: 'INCOME', color: '#047857', budget: 0 },
+        { id: 5, name: 'Food', type: 'EXPENSE', color: '#F59E0B', budget: 15000 },
+        { id: 6, name: 'Travel', type: 'EXPENSE', color: '#3B82F6', budget: 8000 },
+        { id: 7, name: 'Petrol', type: 'EXPENSE', color: '#EF4444', budget: 6000 },
+        { id: 8, name: 'Shopping', type: 'EXPENSE', color: '#EC4899', budget: 10000 },
+        { id: 9, name: 'Gym', type: 'EXPENSE', color: '#10B981', budget: 2500 },
+        { id: 10, name: 'Bills', type: 'EXPENSE', color: '#64748B', budget: 8000 }
+      ],
+      transactions: [
+        { id: 1, accountId: 1, type: 'INCOME', amount: 125000, date: '2026-11-18', payee: 'Tech Corp India Ltd', notes: 'Monthly Software Engineer Salary Credit', mode: 'NetBanking' },
+        { id: 2, accountId: 1, type: 'EXPENSE', amount: 840, date: '2026-11-19', payee: 'Swiggy', categoryId: 5, notes: 'Dinner order - Gourmet Burger & Drink', mode: 'UPI' },
+        { id: 3, accountId: 1, type: 'EXPENSE', amount: 2200, date: '2026-11-18', payee: 'Shell Petrol Pump', categoryId: 7, notes: 'Fuel refill for car', mode: 'UPI' },
+        { id: 4, accountId: 1, type: 'EXPENSE', amount: 3450, date: '2026-11-19', payee: 'MakeMyTrip', categoryId: 6, notes: 'Weekend flight ticket booking', mode: 'UPI' },
+        { id: 5, accountId: 1, destAccountId: 4, type: 'TRANSFER', amount: 5000, date: '2026-11-19', payee: 'ATM Withdrawal', notes: 'Withdrew cash for emergency wallet', mode: 'Cash' },
+        { id: 6, accountId: 1, type: 'INCOME', amount: 35000, date: '2026-11-17', payee: 'Client Apex Systems', categoryId: 3, notes: 'Freelance Frontend Dashboard Milestone', mode: 'NetBanking' },
+        { id: 7, accountId: 8, type: 'EXPENSE', amount: 4890, date: '2026-11-16', payee: 'Amazon India', categoryId: 8, notes: 'Ergonomic Desk Accessories', mode: 'CreditCard' }
+      ],
+      debts: [
+        { id: 1, person: 'Rahul Sharma', phone: '+91 98765 43210', type: 'GIVEN', initialAmount: 25000, pendingAmount: 15000, date: '2026-10-15', dueDate: '2026-12-15', status: 'PARTIALLY_PAID', notes: 'Emergency loan given for laptop repair; repaid 10k' },
+        { id: 2, person: 'Amit Verma', phone: '+91 98111 22334', type: 'GIVEN', initialAmount: 12000, pendingAmount: 12000, date: '2026-11-02', dueDate: '2026-12-05', status: 'PENDING', notes: 'Trip advance share pending to receive' },
+        { id: 3, person: 'Vikram Uncle', phone: '+91 99000 88776', type: 'TAKEN', initialAmount: 50000, pendingAmount: 20000, date: '2026-08-10', dueDate: '2026-12-31', status: 'PARTIALLY_PAID', notes: 'Personal short term borrowing; 30k repaid' }
+      ],
+      goals: [
+        { id: 1, name: 'Emergency Fund (6 Months)', target: 300000, saved: 180000, date: '2026-12-31' },
+        { id: 2, name: 'New MacBook Pro / Laptop', target: 180000, saved: 95000, date: '2026-08-15' },
+        { id: 3, name: 'Bike (Royal Enfield Hunter)', target: 220000, saved: 110000, date: '2026-11-30' },
+        { id: 4, name: 'Europe Travel Trip', target: 250000, saved: 60000, date: '2027-04-10' }
+      ],
+      investments: [
+        { id: 1, name: 'Parag Parikh Flexi Cap Fund', type: 'MUTUAL_FUND', invested: 120000, current: 148500, sipDay: 5, notes: 'Monthly SIP' },
+        { id: 2, name: 'Mirae Asset Large Cap Fund', type: 'MUTUAL_FUND', invested: 80000, current: 94200, sipDay: 10, notes: 'Monthly SIP' },
+        { id: 3, name: 'HDFC Bank Shares (NSE)', type: 'STOCKS', invested: 75000, current: 86400, notes: 'Bluechip holding' },
+        { id: 4, name: 'TCS Shares (NSE)', type: 'STOCKS', invested: 60000, current: 69800, notes: 'IT sector giant' },
+        { id: 5, name: 'Sovereign Gold Bond (SGB 2026)', type: 'GOLD', invested: 100000, current: 132000, notes: '2.5% semi-annual interest' },
+        { id: 6, name: 'HDFC Fixed Deposit', type: 'FIXED_DEPOSIT', invested: 150000, current: 162750, notes: '7.25% interest' },
+        { id: 7, name: 'Public Provident Fund (PPF)', type: 'PPF', invested: 150000, current: 168000, notes: 'Tax-free sovereign' }
+      ],
+      recurring: [
+        { id: 1, title: 'Apartment House Rent', amount: 22000, nextDueDate: '2026-12-01', accountId: 1 },
+        { id: 2, title: 'Airtel Fiber Broadband', amount: 1179, nextDueDate: '2026-12-12', accountId: 1 },
+        { id: 3, title: 'Electricity Bill (BESCOM)', amount: 2450, nextDueDate: '2026-12-18', accountId: 1 },
+        { id: 4, title: 'Gold Gym Membership', amount: 2500, nextDueDate: '2026-12-05', accountId: 1 },
+        { id: 5, title: 'Netflix Premium 4K', amount: 649, nextDueDate: '2026-12-20', accountId: 8 }
+      ],
+      monthlyBudget: 120000
+    };
+
+    // Load from LocalStorage or initialize
+    function loadData() {
+      try {
+        const stored = localStorage.getItem('sameer_money_data');
+        if (stored) return JSON.parse(stored);
+      } catch (e) {}
+      return DEFAULT_DATA;
+    }
+
+    function saveData(data) {
+      try {
+        localStorage.setItem('sameer_money_data', JSON.stringify(data));
+      } catch (e) {}
+    }
+
+    let state = loadData();
+    let currentTab = 'dashboard';
+
+    // Financial calculations
+    function getFinancials() {
+      const liquid = state.accounts.filter(a => a.type !== 'CREDIT_CARD').reduce((acc, c) => acc + Number(c.balance), 0);
+      const ccDues = state.accounts.filter(a => a.type === 'CREDIT_CARD').reduce((acc, c) => acc + Number(c.balance), 0);
+      const totalInv = state.investments.reduce((acc, c) => acc + Number(c.invested), 0);
+      const curInv = state.investments.reduce((acc, c) => acc + Number(c.current), 0);
+      const invProfit = curInv - totalInv;
+      const receivables = state.debts.filter(d => d.type === 'GIVEN' && d.status !== 'SETTLED').reduce((acc, c) => acc + Number(c.pendingAmount), 0);
+      const payables = state.debts.filter(d => d.type === 'TAKEN' && d.status !== 'SETTLED').reduce((acc, c) => acc + Number(c.pendingAmount), 0);
+      const netWorth = liquid + curInv + receivables - payables - ccDues;
+
+      const incomeTxs = state.transactions.filter(t => t.type === 'INCOME');
+      const expenseTxs = state.transactions.filter(t => t.type === 'EXPENSE');
+      const totalIncome = incomeTxs.reduce((a, c) => a + Number(c.amount), 0);
+      const totalExpenses = expenseTxs.reduce((a, c) => a + Number(c.amount), 0);
+      const totalSavings = totalIncome - totalExpenses;
+      const savingsRate = totalIncome > 0 ? ((totalSavings / totalIncome) * 100).toFixed(1) : 0;
+      const remainingBudget = Math.max(0, state.monthlyBudget - totalExpenses);
+
+      return { liquid, ccDues, totalInv, curInv, invProfit, receivables, payables, netWorth, totalIncome, totalExpenses, totalSavings, savingsRate, remainingBudget };
+    }
+
+    // Dismiss welcome splash
+    function dismissWelcomeSplash() {
+      document.getElementById('welcome-splash').style.display = 'none';
+    }
+
+    function showWelcomeSplash() {
+      document.getElementById('welcome-splash').style.display = 'flex';
+    }
+
+    // Switch tab
+    function switchTab(tabId) {
+      currentTab = tabId;
+      document.querySelectorAll('.sidebar-link').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = Array.from(document.querySelectorAll('.sidebar-link')).find(btn => btn.getAttribute('onclick')?.includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      document.getElementById('header-page-title').innerText = tabId.replace('-', ' ').toUpperCase();
+      renderCurrentView();
+    }
+
+    // ------------------------------------------------------------------------
+    // RENDER VIEWS
+    // ------------------------------------------------------------------------
+    function renderCurrentView() {
+      const main = document.getElementById('main-content');
+      const fin = getFinancials();
+
+      // Update badge
+      const badgeTx = document.getElementById('badge-tx-count');
+      if (badgeTx) badgeTx.innerText = state.transactions.length;
+
+      // Update splash values
+      document.getElementById('splash-networth').innerText = formatINR(fin.netWorth);
+      document.getElementById('splash-liquid').innerText = formatINR(fin.liquid);
+
+      if (currentTab === 'dashboard') {
+        renderDashboard(main, fin);
+      } else if (currentTab === 'transactions') {
+        renderTransactions(main);
+      } else if (currentTab === 'income') {
+        renderIncome(main, fin);
+      } else if (currentTab === 'expenses') {
+        renderExpenses(main, fin);
+      } else if (currentTab === 'accounts') {
+        renderAccounts(main, fin);
+      } else if (currentTab === 'transfers') {
+        renderTransfers(main);
+      } else if (currentTab === 'budget') {
+        renderBudget(main, fin);
+      } else if (currentTab === 'goals') {
+        renderGoals(main);
+      } else if (currentTab === 'money-given') {
+        renderDebts(main, 'GIVEN');
+      } else if (currentTab === 'money-taken') {
+        renderDebts(main, 'TAKEN');
+      } else if (currentTab === 'investments') {
+        renderInvestments(main, fin);
+      } else if (currentTab === 'recurring') {
+        renderRecurring(main);
+      } else if (currentTab === 'calendar') {
+        renderCalendar(main);
+      } else if (currentTab === 'reports') {
+        renderReports(main, fin);
+      } else if (currentTab === 'ai') {
+        renderAI(main, fin);
+      } else if (currentTab === 'settings') {
+        renderSettings(main);
+      }
+    }
+
+    // DASHBOARD VIEW
+    function renderDashboard(container, fin) {
+      container.innerHTML = `
+        <!-- Welcome Banner -->
+        <div style="background: linear-gradient(135deg, rgba(15, 28, 63, 0.9) 0%, rgba(7, 13, 30, 0.95) 100%); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 1.25rem; padding: 1.5rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+          <div>
+            <div class="badge badge-gold" style="margin-bottom: 0.5rem;">SAMEER'S FINANCIAL CONTROL CENTER</div>
+            <h1 style="font-size: 1.8rem; font-weight: 900; color: #fff;">
+              WELCOME BACK, <span class="text-gold-gradient">SAMEER</span>
+            </h1>
+            <p style="font-size: 0.78rem; color: var(--slate-400); margin-top: 0.25rem;">
+              "Your Money. Your Control. Your Future." — Every rupee of your wealth under complete control.
+            </p>
+          </div>
+          <div style="display: flex; gap: 0.75rem;">
+            <button onclick="openModal('add-tx')" class="btn-gold">+ Log Transaction</button>
+            <button onclick="switchTab('reports')" class="btn-secondary">📑 Statements</button>
+          </div>
+        </div>
+
+        <!-- 8 Core Dimension Metrics Grid -->
+        <div class="grid-metrics" style="margin-bottom: 1.5rem;">
+          <div class="metric-card gold-border">
+            <div class="metric-title" style="color: var(--gold-400);"><span>TOTAL NET WORTH</span> <span>🛡️</span></div>
+            <div class="metric-num">${formatINR(fin.netWorth)}</div>
+            <div class="metric-desc">Liquid + Portfolio + Receivables - Debts</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-title" style="color: var(--emerald-400);"><span>AVAILABLE BALANCE</span> <span>🏦</span></div>
+            <div class="metric-num">${formatINR(fin.liquid)}</div>
+            <div class="metric-desc">Checking, Savings & Wallets</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-title" style="color: var(--blue-400);"><span>RECORDED INCOME</span> <span>📈</span></div>
+            <div class="metric-num">${formatINR(fin.totalIncome)}</div>
+            <div class="metric-desc">Salary, Freelance & Credits</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-title" style="color: var(--rose-400);"><span>TOTAL EXPENSES</span> <span>📉</span></div>
+            <div class="metric-num">${formatINR(fin.totalExpenses)}</div>
+            <div class="metric-desc">Remaining Budget: ${formatINR(fin.remainingBudget)}</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-title" style="color: var(--purple-400);"><span>PORTFOLIO VALUATION</span> <span>💎</span></div>
+            <div class="metric-num">${formatINR(fin.curInv)}</div>
+            <div class="metric-desc" style="color: var(--emerald-400);">Profit: +${formatINR(fin.invProfit)}</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-title" style="color: var(--amber-400);"><span>RECEIVABLES (LENT)</span> <span>🤝</span></div>
+            <div class="metric-num">${formatINR(fin.receivables)}</div>
+            <div class="metric-desc">Pending return from contacts</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-title" style="color: var(--rose-400);"><span>PAYABLES & CC DUES</span> <span>💳</span></div>
+            <div class="metric-num">${formatINR(fin.payables + fin.ccDues)}</div>
+            <div class="metric-desc">CC: ${formatINR(fin.ccDues)} | Khata: ${formatINR(fin.payables)}</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-title" style="color: var(--emerald-400);"><span>SAVINGS RATE</span> <span>🐷</span></div>
+            <div class="metric-num">${fin.savingsRate}%</div>
+            <div class="metric-desc">Net Savings: ${formatINR(fin.totalSavings)}</div>
+          </div>
+        </div>
+
+        <!-- Recent Transactions Preview -->
+        <div class="glass-panel" style="padding: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <div>
+              <h3 style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: #fff;">Recent Transactions</h3>
+              <p style="font-size: 0.65rem; color: var(--slate-400);">Latest activity across Sameer's accounts</p>
+            </div>
+            <button onclick="switchTab('transactions')" class="btn-secondary" style="font-size: 0.68rem; padding: 0.35rem 0.65rem;">View Full Ledger →</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Payee / Purpose</th>
+                  <th>Account</th>
+                  <th style="text-align: right;">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${state.transactions.slice(0, 5).map(t => {
+                  const acc = state.accounts.find(a => a.id === t.accountId);
+                  return `
+                    <tr>
+                      <td style="font-family: monospace;">${t.date}</td>
+                      <td>
+                        <span class="badge ${t.type === 'INCOME' ? 'badge-emerald' : t.type === 'EXPENSE' ? 'badge-rose' : 'badge-blue'}">
+                          ${t.type}
+                        </span>
+                      </td>
+                      <td><strong style="color: #fff;">${t.payee || 'Transaction'}</strong> <span style="font-size: 0.65rem; color: var(--slate-400); display: block;">${t.notes || ''}</span></td>
+                      <td>${acc ? acc.name : ''}</td>
+                      <td style="text-align: right; font-weight: 800; font-family: monospace; color: ${t.type === 'INCOME' ? 'var(--emerald-400)' : t.type === 'EXPENSE' ? 'var(--rose-400)' : 'var(--blue-400)'};">
+                        ${t.type === 'INCOME' ? '+' : t.type === 'EXPENSE' ? '-' : ''}${formatINR(t.amount)}
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    // ALL TRANSACTIONS VIEW
+    function renderTransactions(container) {
+      container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <div>
+            <h2 style="font-size: 1.15rem; font-weight: 800; text-transform: uppercase; color: #fff;">Master Transaction Ledger</h2>
+            <p style="font-size: 0.72rem; color: var(--slate-400);">Total ${state.transactions.length} records. Real-time balance recalculated on additions and deletions.</p>
+          </div>
+          <button onclick="openModal('add-tx')" class="btn-gold">+ New Transaction</button>
+        </div>
+
+        <div class="glass-panel" style="padding: 1.25rem;">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Payee / Description</th>
+                  <th>Account</th>
+                  <th>Mode</th>
+                  <th style="text-align: right;">Amount</th>
+                  <th style="text-align: center;">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${state.transactions.map(t => {
+                  const acc = state.accounts.find(a => a.id === t.accountId);
+                  return `
+                    <tr>
+                      <td style="font-family: monospace;">${t.date}</td>
+                      <td>
+                        <span class="badge ${t.type === 'INCOME' ? 'badge-emerald' : t.type === 'EXPENSE' ? 'badge-rose' : 'badge-blue'}">
+                          ${t.type}
+                        </span>
+                      </td>
+                      <td>
+                        <strong style="color: #fff;">${t.payee || 'Transaction'}</strong>
+                        ${t.notes ? `<p style="font-size: 0.65rem; color: var(--slate-400);">${t.notes}</p>` : ''}
+                      </td>
+                      <td>${acc ? acc.name : ''}</td>
+                      <td style="font-family: monospace; font-size: 0.68rem; color: var(--slate-400);">${t.mode || 'UPI'}</td>
+                      <td style="text-align: right; font-weight: 800; font-family: monospace; font-size: 0.85rem; color: ${t.type === 'INCOME' ? 'var(--emerald-400)' : t.type === 'EXPENSE' ? 'var(--rose-400)' : 'var(--blue-400)'};">
+                        ${t.type === 'INCOME' ? '+' : t.type === 'EXPENSE' ? '-' : ''}${formatINR(t.amount)}
+                      </td>
+                      <td style="text-align: center;">
+                        <button onclick="deleteTx(${t.id})" style="background: none; border: none; color: var(--rose-400); cursor: pointer; padding: 4px;" title="Delete and reverse balance">🗑️</button>
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    // INCOME VIEW
+    function renderIncome(container, fin) {
+      const incomeTxs = state.transactions.filter(t => t.type === 'INCOME');
+      container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <div>
+            <h2 style="font-size: 1.15rem; font-weight: 800; text-transform: uppercase; color: #fff;">Income Management</h2>
+            <p style="font-size: 0.72rem; color: var(--slate-400);">Salary, Bonus, Incentives, Freelancing, Business, Gifts & Refunds</p>
+          </div>
+          <button onclick="openModal('add-income')" class="btn-gold">+ Add Income</button>
+        </div>
+
+        <div class="metric-card gold-border" style="margin-bottom: 1.25rem;">
+          <p style="font-size: 0.7rem; font-weight: 700; color: var(--emerald-400); text-transform: uppercase;">TOTAL RECORDED INCOME</p>
+          <div class="metric-num" style="color: var(--emerald-400); font-size: 2rem;">${formatINR(fin.totalIncome)}</div>
+          <p style="font-size: 0.7rem; color: var(--slate-400); margin-top: 0.35rem;">Across ${incomeTxs.length} credit entries</p>
+        </div>
+
+        <div class="glass-panel" style="padding: 1.25rem;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Source / Payee</th>
+                <th>Account Credited</th>
+                <th style="text-align: right;">Amount</th>
+                <th style="text-align: center;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${incomeTxs.map(t => {
+                const acc = state.accounts.find(a => a.id === t.accountId);
+                return `
+                  <tr>
+                    <td style="font-family: monospace;">${t.date}</td>
+                    <td><strong style="color: #fff;">${t.payee}</strong> <span style="font-size: 0.65rem; color: var(--slate-400); display: block;">${t.notes || ''}</span></td>
+                    <td>${acc ? acc.name : ''}</td>
+                    <td style="text-align: right; font-weight: 800; font-family: monospace; color: var(--emerald-400);">+${formatINR(t.amount)}</td>
+                    <td style="text-align: center;"><button onclick="deleteTx(${t.id})" style="background: none; border: none; color: var(--rose-400); cursor: pointer;">🗑️</button></td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    // EXPENSE VIEW
+    function renderExpenses(container, fin) {
+      const expenseTxs = state.transactions.filter(t => t.type === 'EXPENSE');
+      container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <div>
+            <h2 style="font-size: 1.15rem; font-weight: 800; text-transform: uppercase; color: #fff;">Expense Management</h2>
+            <p style="font-size: 0.72rem; color: var(--slate-400);">Food, Travel, Petrol, Shopping, Clothes, Gym, Health, Recharge, Bills</p>
+          </div>
+          <button onclick="openModal('add-expense')" class="btn-gold">+ Add Expense</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">
+          <div class="metric-card">
+            <p class="form-lbl" style="color: var(--rose-400);">TOTAL EXPENSES</p>
+            <div class="metric-num" style="color: var(--rose-400);">${formatINR(fin.totalExpenses)}</div>
+          </div>
+          <div class="metric-card">
+            <p class="form-lbl" style="color: var(--gold-400);">REMAINING BUDGET</p>
+            <div class="metric-num" style="color: #fff;">${formatINR(fin.remainingBudget)}</div>
+          </div>
+        </div>
+
+        <div class="glass-panel" style="padding: 1.25rem;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Purpose / Payee</th>
+                <th>Account Deducted</th>
+                <th style="text-align: right;">Amount</th>
+                <th style="text-align: center;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${expenseTxs.map(t => {
+                const acc = state.accounts.find(a => a.id === t.accountId);
+                return `
+                  <tr>
+                    <td style="font-family: monospace;">${t.date}</td>
+                    <td><strong style="color: #fff;">${t.payee}</strong> <span style="font-size: 0.65rem; color: var(--slate-400); display: block;">${t.notes || ''}</span></td>
+                    <td>${acc ? acc.name : ''}</td>
+                    <td style="text-align: right; font-weight: 800; font-family: monospace; color: var(--rose-400);">-${formatINR(t.amount)}</td>
+                    <td style="text-align: center;"><button onclick="deleteTx(${t.id})" style="background: none; border: none; color: var(--rose-400); cursor: pointer;">🗑️</button></td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    // ACCOUNTS VIEW
+    function renderAccounts(container, fin) {
+      container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <div>
+            <h2 style="font-size: 1.15rem; font-weight: 800; text-transform: uppercase; color: #fff;">My Financial Accounts</h2>
+            <p style="font-size: 0.72rem; color: var(--slate-400);">Bank Accounts, Cash, UPI (GPay, PhonePe, Paytm), Debit & Credit Cards</p>
+          </div>
+          <button onclick="openModal('add-account')" class="btn-gold">+ Add Account</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+          ${state.accounts.map(acc => {
+            const isCC = acc.type === 'CREDIT_CARD';
+            return `
+              <div class="glass-panel" style="padding: 1.25rem; border-color: ${isCC ? 'rgba(251, 191, 36, 0.4)' : 'var(--navy-700)'};">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                  <div>
+                    <h3 style="font-size: 0.88rem; font-weight: 800; color: #fff;">${acc.name}</h3>
+                    <p style="font-size: 0.65rem; color: var(--slate-400);">${acc.institution} ${acc.last4 ? `(••${acc.last4})` : ''}</p>
+                  </div>
+                  <span class="badge ${isCC ? 'badge-rose' : 'badge-emerald'}">${acc.type}</span>
+                </div>
+                <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--navy-800);">
+                  <p class="form-lbl">${isCC ? 'Current Outstanding Due' : 'Available Balance'}</p>
+                  <p style="font-size: 1.35rem; font-weight: 800; color: ${isCC ? 'var(--amber-400)' : '#fff'}; font-family: monospace; margin-top: 0.2rem;">
+                    ${formatINR(acc.balance)}
+                  </p>
+                  ${isCC ? `<p style="font-size: 0.65rem; color: var(--slate-400); margin-top: 0.25rem;">Credit Limit: ${formatINR(acc.creditLimit)}</p>` : ''}
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    // TRANSFERS VIEW
+    function renderTransfers(container) {
+      container.innerHTML = `
+        <div style="max-width: 600px; margin: 0 auto;">
+          <h2 style="font-size: 1.15rem; font-weight: 800; text-transform: uppercase; color: #fff; margin-bottom: 0.35rem;">Account Transfers</h2>
+          <p style="font-size: 0.72rem; color: var(--slate-400); margin-bottom: 1.25rem;">
+            Strict Financial Rule: Internal transfers move funds between your accounts with zero double counting.
+          </p>
+
+          <div class="glass-panel" style="padding: 1.5rem;">
+            <form onsubmit="handleTransferSubmit(event)">
+              <label class="form-lbl">From Account (Source)</label>
+              <select id="transfer-src" class="form-ctrl">
+                ${state.accounts.map(a => `<option value="${a.id}">${a.name} (${formatINR(a.balance)})</option>`).join('')}
+              </select>
+
+              <label class="form-lbl">To Account (Destination)</label>
+              <select id="transfer-dst" class="form-ctrl">
+                ${state.accounts.map(a => `<option value="${a.id}">${a.name} (${formatINR(a.balance)})</option>`).join('')}
+              </select>
+
+              <label class="form-lbl">Transfer Amount (₹)</label>
+              <input id="transfer-amt" type="number" step="0.01" class="form-ctrl" placeholder="e.g. 5000" required />
+
+              <label class="form-lbl">Transfer Notes</label>
+              <input id="transfer-notes" type="text" class="form-ctrl" placeholder="e.g. ATM cash withdrawal" />
+
+              <button type="submit" class="btn-gold" style="width: 100%; justify-content: center; padding: 0.75rem; font-size: 0.8rem;">
+                Execute Transfer
+              </button>
+            </form>
+          </div>
+        </div>
+      `;
+    }
+
+    // BUDGET VIEW
+    function renderBudget(container, fin) {
+      const pct = (fin.totalExpenses / state.monthlyBudget) * 100;
+      container.innerHTML = `
+        <div style="margin-bottom: 1.25rem;">
+          <h2 style="font-size: 1.15rem; font-weight: 800; text-transform: uppercase; color: #fff;">Budget Control Center</h2>
+          <p style="font-size: 0.72rem; color: var(--slate-400);">Monthly spending limits and threshold alerts</p>
+        </div>
+
+        <div class="glass-panel" style="padding: 1.5rem; margin-bottom: 1.5rem; border-color: rgba(212, 175, 55, 0.4);">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem;">
+            <div>
+              <p class="form-lbl" style="color: var(--gold-400);">MONTHLY BUDGET LIMIT</p>
+              <h3 style="font-size: 1.8rem; font-weight: 900; color: #fff; font-family: monospace;">
+                ${formatINR(fin.totalExpenses)} / ${formatINR(state.monthlyBudget)}
+              </h3>
+            </div>
+            <div style="text-align: right;">
+              <p class="form-lbl">REMAINING</p>
+              <p style="font-size: 1.4rem; font-weight: 900; color: var(--emerald-400); font-family: monospace;">
+                ${formatINR(fin.remainingBudget)}
+              </p>
+            </div>
+          </div>
+
+          <div style="width: 100%; height: 12px; border-radius: 9999px; background: var(--navy-800); overflow: hidden; margin-top: 0.75rem;">
+            <div style="height: 100%; width: ${Math.min(100, pct)}%; background: ${pct > 90 ? 'var(--rose-400)' : pct > 75 ? 'var(--amber-400)' : 'var(--gold-500)'}; transition: width 0.3s ease;"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--slate-400); margin-top: 0.35rem; font-family: monospace;">
+            <span>0%</span>
+            <span>${pct.toFixed(1)}% utilized</span>
+            <span>100%</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // SAVINGS GOALS VIEW
+    function renderGoals(container) {
+      container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <div>
+            <h2 style="font-size: 1.15rem; font-weight: 800; text-transform: uppercase; color: #fff;">Savings Goals</h2>
+            <p style="font-size: 0.72rem; color: var(--slate-400);">Emergency Fund, Laptop, Bike, Travel & Personal Wealth</p>
+          </div>
+          <button onclick="openModal('add-goal')" class="btn-gold">+ Create Goal</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+          ${state.goals.map(g => {
+            const p = Math.min(100, (g.saved / g.target) * 100);
+            return `
+              <div class="glass-panel" style="padding: 1.25rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <h3 style="font-size: 0.88rem; font-weight: 800; color: #fff;">${g.name}</h3>
+                  <span class="badge badge-gold">${p.toFixed(0)}%</span>
+                </div>
+                <div style="margin: 0.75rem 0;">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.25rem; font-family: monospace;">
+                    <span style="color: var(--slate-400);">Saved:</span>
+                    <strong style="color: #fff;">${formatINR(g.saved)}</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.5rem; font-family: monospace;">
+                    <span style="color: var(--slate-400);">Target:</span>
+                    <strong style="color: var(--slate-300);">${formatINR(g.target)}</strong>
+                  </div>
+                  <div style="width: 100%; height: 8px; border-radius: 9999px; background: var(--navy-800); overflow: hidden;">
+                    <div style="height: 100%; width: ${p}%; background: var(--gold-500);"></div>
+                  </div>
+                </div>
+                <button onclick="depositGoal(${g.id})" class="btn-secondary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+                  Deposit Funds
+                </button>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    // DEBTS (KHATA) VIEW
+    function renderDebts(container, type) {
+      const isGiven = type === 'GIVEN';
+      const debts = state.debts.filter(d => d.type === type);
+      const totalPending = debts.reduce((a, c) => a + Number(c.pendingAmount), 0);
+
+      container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <div>
+            <h2 style="font-size: 1.15rem; font-weight: 800; text-transform: uppercase; color: #fff;">
+              ${isGiven ? 'Money Given (Receivables / Lent)' : 'Money Taken (Debt / Borrowings)'}
+            </h2>
+            <p style="font-size: 0.72rem; color: var(--slate-400);">
+              ${isGiven ? 'Track money you gave to friends, relatives, colleagues' : 'Track personal borrowings and liabilities'}
+            </p>
+          </div>
+          <button onclick="openModal('${isGiven ? 'add-debt-given' : 'add-debt-taken'}')" class="btn-gold">
+            + ${isGiven ? 'Record Money Given' : 'Record Money Taken'}
+          </button>
+        </div>
+
+        <div class="metric-card gold-border" style="margin-bottom: 1.25rem;">
+          <p class="form-lbl" style="color: var(--gold-400);">TOTAL PENDING ${isGiven ? 'RECEIVABLES' : 'LIABILITIES'}</p>
+          <div class="metric-num" style="color: ${isGiven ? 'var(--amber-400)' : 'var(--rose-400)'}; font-size: 2rem;">
+            ${formatINR(totalPending)}
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+          ${debts.map(d => `
+            <div class="glass-panel" style="padding: 1.25rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <h3 style="font-size: 0.88rem; font-weight: 800; color: #fff;">${d.person}</h3>
+                <span class="badge ${d.status === 'SETTLED' ? 'badge-emerald' : 'badge-gold'}">${d.status}</span>
+              </div>
+              <div style="background: var(--navy-950); border: 1px solid var(--navy-800); border-radius: 0.5rem; padding: 0.65rem; margin: 0.75rem 0; font-size: 0.72rem; font-family: monospace;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.2rem;">
+                  <span style="color: var(--slate-400);">Initial:</span>
+                  <span>${formatINR(d.initialAmount)}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="color: var(--slate-400);">Pending:</span>
+                  <strong style="color: var(--gold-400);">${formatINR(d.pendingAmount)}</strong>
+                </div>
+              </div>
+              ${d.notes ? `<p style="font-size: 0.68rem; color: var(--slate-400); font-style: italic; margin-bottom: 0.75rem;">"${d.notes}"</p>` : ''}
+              ${d.status !== 'SETTLED' ? `
+                <button onclick="repayDebt(${d.id})" class="btn-gold" style="width: 100%; justify-content: center;">
+                  Log Repayment
+                </button>
+              ` : ''}
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    // INVESTMENTS VIEW
+    function renderInvestments(container, fin) {
+      container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <div>
+            <h2 style="font-size: 1.15rem; font-weight: 800; text-transform: uppercase; color: #fff;">Investment Portfolio</h2>
+            <p style="font-size: 0.72rem; color: var(--slate-400);">Mutual Funds, SIPs, Stocks, SGB Gold, Fixed Deposits & PPF</p>
+          </div>
+          <button onclick="openModal('add-inv')" class="btn-gold">+ Add Asset</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">
+          <div class="metric-card">
+            <p class="form-lbl">INVESTED CAPITAL</p>
+            <div class="metric-num">${formatINR(fin.totalInv)}</div>
+          </div>
+          <div class="metric-card gold-border">
+            <p class="form-lbl" style="color: var(--gold-400);">CURRENT VALUATION</p>
+            <div class="metric-num">${formatINR(fin.curInv)}</div>
+          </div>
+          <div class="metric-card">
+            <p class="form-lbl" style="color: var(--emerald-400);">TOTAL GAIN / P&L</p>
+            <div class="metric-num" style="color: var(--emerald-400);">+${formatINR(fin.invProfit)}</div>
+          </div>
+        </div>
+
+        <div class="glass-panel" style="padding: 1.25rem;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Scheme / Asset</th>
+                <th>Type</th>
+                <th style="text-align: right;">Invested</th>
+                <th style="text-align: right;">Current Value</th>
+                <th style="text-align: right;">Gain / Loss</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${state.investments.map(inv => {
+                const gain = inv.current - inv.invested;
+                return `
+                  <tr>
+                    <td><strong style="color: #fff;">${inv.name}</strong></td>
+                    <td><span class="badge badge-blue">${inv.type}</span></td>
+                    <td style="text-align: right; font-family: monospace;">${formatINR(inv.invested)}</td>
+                    <td style="text-align: right; font-family: monospace; font-weight: 800; color: #fff;">${formatINR(inv.current)}</td>
+                    <td style="text-align: right; font-family: monospace; font-weight: 800; color: ${gain >= 0 ? 'var(--emerald-400)' : 'var(--rose-400)'};">
+                      +${formatINR(gain)}
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    // RECURRING BILLS VIEW
+    function renderRecurring(container) {
+      container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <div>
+            <h2 style="font-size: 1.15rem; font-weight: 800; text-transform: uppercase; color: #fff;">Recurring Bills & Reminders</h2>
+            <p style="font-size: 0.72rem; color: var(--slate-400);">Rent, Fiber Broadband, Electricity, Gym, Subscriptions</p>
+          </div>
+          <button onclick="openModal('add-recurring')" class="btn-gold">+ Add Bill</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+          ${state.recurring.map(b => `
+            <div class="glass-panel" style="padding: 1.25rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <h3 style="font-size: 0.88rem; font-weight: 800; color: #fff;">${b.title}</h3>
+                <span style="font-size: 1.05rem; font-weight: 800; color: var(--gold-400); font-family: monospace;">${formatINR(b.amount)}</span>
+              </div>
+              <p style="font-size: 0.68rem; color: var(--slate-400); margin-bottom: 0.85rem;">
+                Due Date: <strong style="color: #fff; font-family: monospace;">${b.nextDueDate}</strong>
+              </p>
+              <button onclick="payRecurringBill(${b.id})" class="btn-gold" style="width: 100%; justify-content: center;">
+                Mark as Paid
+              </button>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    // FINANCIAL CALENDAR VIEW
+    function renderCalendar(container) {
+      const today = new Date();
+      const days = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+      container.innerHTML = `
+        <div style="margin-bottom: 1.25rem;">
+          <h2 style="font-size: 1.15rem; font-weight: 800; text-transform: uppercase; color: #fff;">Financial Calendar</h2>
+          <p style="font-size: 0.72rem; color: var(--slate-400);">Daily spending, income credits & upcoming bills for current month</p>
+        </div>
+
+        <div class="glass-panel" style="padding: 1.25rem;">
+          <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem;">
+            ${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => `<div style="text-align: center; font-size: 0.65rem; font-weight: 800; color: var(--slate-500); text-transform: uppercase;">${d}</div>`).join('')}
+            ${Array.from({ length: days }).map((_, i) => {
+              const dNum = i + 1;
+              const dStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(dNum).padStart(2, '0')}`;
+              const dayTxs = state.transactions.filter(t => t.date === dStr);
+              const inc = dayTxs.filter(t => t.type === 'INCOME').reduce((a, c) => a + Number(c.amount), 0);
+              const exp = dayTxs.filter(t => t.type === 'EXPENSE').reduce((a, c) => a + Number(c.amount), 0);
+              return `
+                <div style="background: var(--navy-950); border: 1px solid var(--navy-800); border-radius: 0.5rem; padding: 0.5rem; min-height: 60px;">
+                  <div style="font-size: 0.7rem; font-weight: 800; color: ${dNum === today.getDate() ? 'var(--gold-400)' : 'var(--slate-400)'};">${dNum}</div>
+                  ${inc > 0 ? `<div style="font-size: 0.6rem; color: var(--emerald-400); font-weight: 700; font-family: monospace;">+${formatINR(inc)}</div>` : ''}
+                  ${exp > 0 ? `<div style="font-size: 0.6rem; color: var(--rose-400); font-weight: 700; font-family: monospace;">-${formatINR(exp)}</div>` : ''}
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // REPORTS VIEW
+    function renderReports(container, fin) {
+      container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <div>
+            <h2 style="font-size: 1.15rem; font-weight: 800; text-transform: uppercase; color: #fff;">Financial Statements & Reports</h2>
+            <p style="font-size: 0.72rem; color: var(--slate-400);">Comprehensive audit statement for SAMEER</p>
+          </div>
+          <button onclick="window.print()" class="btn-gold">🖨️ Print Statement</button>
+        </div>
+
+        <div class="glass-panel" style="padding: 1.5rem;">
+          <div style="border-bottom: 1px solid var(--navy-700); padding-bottom: 1rem; margin-bottom: 1.25rem;">
+            <h1 class="text-gold-gradient" style="font-size: 1.5rem; font-weight: 900; text-transform: uppercase;">SAMEER'S MONEY MANAGER</h1>
+            <p style="font-size: 0.72rem; color: var(--slate-400);">Personal Finance Control Center • "Your Money. Your Control. Your Future."</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="background: var(--navy-950); padding: 1rem; border-radius: 0.75rem; border: 1px solid var(--navy-800);">
+              <p class="form-lbl">TOTAL NET WORTH</p>
+              <h3 style="font-size: 1.5rem; font-weight: 800; color: #fff; font-family: monospace;">${formatINR(fin.netWorth)}</h3>
+            </div>
+            <div style="background: var(--navy-950); padding: 1rem; border-radius: 0.75rem; border: 1px solid var(--navy-800);">
+              <p class="form-lbl">AVAILABLE LIQUID FUNDS</p>
+              <h3 style="font-size: 1.5rem; font-weight: 800; color: var(--emerald-400); font-family: monospace;">${formatINR(fin.liquid)}</h3>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // AI MONEY ASSISTANT VIEW
+    function renderAI(container, fin) {
+      container.innerHTML = `
+        <div style="max-width: 700px; margin: 0 auto; height: 100%; display: flex; flex-direction: column;">
+          <div style="margin-bottom: 1rem;">
+            <h2 style="font-size: 1.15rem; font-weight: 800; text-transform: uppercase; color: #fff;">Sameer's AI Money Assistant</h2>
+            <p style="font-size: 0.72rem; color: var(--slate-400);">Natural language transaction logging and personal financial strategy</p>
+          </div>
+
+          <div class="glass-panel" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; padding: 1rem;">
+            <div id="ai-chat-box" style="flex: 1; overflow-y: auto; padding: 0.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
+              <div style="background: var(--navy-950); border: 1px solid var(--navy-700); border-radius: 0.75rem; padding: 0.85rem; font-size: 0.75rem; color: var(--slate-200);">
+                👋 <strong>Welcome Sameer!</strong> I am your AI Money Assistant.<br><br>
+                Aap bol kar ya likh kar transactions record kar sakte hain:<br>
+                • <em>"Spent 450 on petrol via PhonePe"</em><br>
+                • <em>"Paid 1200 for food using HDFC"</em><br>
+                • <em>"Received 85000 salary in HDFC"</em><br>
+                • <em>"What is my net worth?"</em>
+              </div>
+            </div>
+
+            <form onsubmit="handleAISubmit(event)" style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+              <input id="ai-input" type="text" class="form-ctrl" style="margin: 0; flex: 1;" placeholder="Type command: 'Spent 500 on dinner using PhonePe'..." required />
+              <button type="submit" class="btn-gold">Send</button>
+            </form>
+          </div>
+        </div>
+      `;
+    }
+
+    // SETTINGS VIEW
+    function renderSettings(container) {
+      container.innerHTML = `
+        <div style="max-width: 600px; margin: 0 auto;">
+          <h2 style="font-size: 1.15rem; font-weight: 800; text-transform: uppercase; color: #fff; margin-bottom: 0.35rem;">Settings & Data Management</h2>
+          <p style="font-size: 0.72rem; color: var(--slate-400); margin-bottom: 1.25rem;">Identity settings and backup engine</p>
+
+          <div class="glass-panel" style="padding: 1.5rem; margin-bottom: 1rem;">
+            <h3 style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--gold-400); margin-bottom: 0.75rem;">User Profile</h3>
+            <label class="form-lbl">User Display Name</label>
+            <input type="text" value="SAMEER" class="form-ctrl" readonly />
+
+            <label class="form-lbl">Currency System</label>
+            <input type="text" value="Indian Rupee (INR - ₹)" class="form-ctrl" readonly />
+          </div>
+
+          <div class="glass-panel" style="padding: 1.5rem;">
+            <h3 style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--gold-400); margin-bottom: 0.75rem;">Backup & Reset</h3>
+            <button onclick="resetData()" class="btn-secondary" style="color: var(--rose-400); border-color: var(--rose-400);">Reset to Demo Data</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // ------------------------------------------------------------------------
+    // ACTIONS & MODALS
+    // ------------------------------------------------------------------------
+    function openModal(modalType) {
+      const container = document.getElementById('modal-container');
+      container.style.display = 'flex';
+      container.className = 'modal-backdrop';
+
+      if (modalType === 'add-tx' || modalType === 'add-income' || modalType === 'add-expense') {
+        const defaultType = modalType === 'add-income' ? 'INCOME' : modalType === 'add-expense' ? 'EXPENSE' : 'EXPENSE';
+        container.innerHTML = `
+          <div class="modal-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <h3 style="font-size: 1rem; font-weight: 800; text-transform: uppercase; color: #fff;">Record Transaction</h3>
+              <button onclick="closeModal()" style="background: none; border: none; color: var(--slate-400); font-size: 1.2rem; cursor: pointer;">✕</button>
+            </div>
+            <form onsubmit="handleTxSubmit(event)">
+              <label class="form-lbl">Type</label>
+              <select id="modal-tx-type" class="form-ctrl">
+                <option value="EXPENSE" ${defaultType === 'EXPENSE' ? 'selected' : ''}>Expense (-)</option>
+                <option value="INCOME" ${defaultType === 'INCOME' ? 'selected' : ''}>Income (+)</option>
+              </select>
+
+              <label class="form-lbl">Amount (₹)</label>
+              <input id="modal-tx-amount" type="number" step="0.01" class="form-ctrl" placeholder="0.00" required />
+
+              <label class="form-lbl">Account</label>
+              <select id="modal-tx-acc" class="form-ctrl">
+                ${state.accounts.map(a => `<option value="${a.id}">${a.name}</option>`).join('')}
+              </select>
+
+              <label class="form-lbl">Payee / Purpose</label>
+              <input id="modal-tx-payee" type="text" class="form-ctrl" placeholder="e.g. Swiggy, Petrol, Salary" required />
+
+              <label class="form-lbl">Date</label>
+              <input id="modal-tx-date" type="date" class="form-ctrl" value="${new Date().toISOString().split('T')[0]}" required />
+
+              <button type="submit" class="btn-gold" style="width: 100%; justify-content: center; padding: 0.75rem;">Save Transaction</button>
+            </form>
+          </div>
+        `;
+      } else if (modalType === 'add-account') {
+        container.innerHTML = `
+          <div class="modal-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <h3 style="font-size: 1rem; font-weight: 800; text-transform: uppercase; color: #fff;">Add Account / Card</h3>
+              <button onclick="closeModal()" style="background: none; border: none; color: var(--slate-400); font-size: 1.2rem; cursor: pointer;">✕</button>
+            </div>
+            <form onsubmit="handleAddAccountSubmit(event)">
+              <label class="form-lbl">Account Name</label>
+              <input id="modal-acc-name" type="text" class="form-ctrl" placeholder="e.g. ICICI Bank, Paytm Wallet" required />
+
+              <label class="form-lbl">Account Type</label>
+              <select id="modal-acc-type" class="form-ctrl">
+                <option value="BANK">Bank Account</option>
+                <option value="CASH">Cash Wallet</option>
+                <option value="UPI">UPI App</option>
+                <option value="CREDIT_CARD">Credit Card</option>
+                <option value="WALLET">Digital Wallet</option>
+              </select>
+
+              <label class="form-lbl">Initial Balance (₹)</label>
+              <input id="modal-acc-bal" type="number" step="0.01" class="form-ctrl" placeholder="0.00" required />
+
+              <button type="submit" class="btn-gold" style="width: 100%; justify-content: center; padding: 0.75rem;">Create Account</button>
+            </form>
+          </div>
+        `;
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('modal-container').style.display = 'none';
+    }
+
+    // Submit Transaction
+    function handleTxSubmit(e) {
+      e.preventDefault();
+      const type = document.getElementById('modal-tx-type').value;
+      const amount = Number(document.getElementById('modal-tx-amount').value);
+      const accountId = Number(document.getElementById('modal-tx-acc').value);
+      const payee = document.getElementById('modal-tx-payee').value;
+      const date = document.getElementById('modal-tx-date').value;
+
+      const newTx = { id: Date.now(), accountId, type, amount, payee, date, mode: 'UPI' };
+
+      // Update account balance
+      state.accounts = state.accounts.map(a => {
+        if (a.id === accountId) {
+          if (type === 'INCOME') return { ...a, balance: a.balance + amount };
+          if (type === 'EXPENSE') {
+            if (a.type === 'CREDIT_CARD') return { ...a, balance: a.balance + amount };
+            return { ...a, balance: a.balance - amount };
+          }
+        }
+        return a;
+      });
+
+      state.transactions.unshift(newTx);
+      saveData(state);
+      closeModal();
+      renderCurrentView();
+    }
+
+    // Delete Transaction with atomic balance reverse
+    function deleteTx(id) {
+      const tx = state.transactions.find(t => t.id === id);
+      if (!tx) return;
+      if (!confirm(`Delete transaction of ${formatINR(tx.amount)}? Account balance will be recalculated.`)) return;
+
+      state.accounts = state.accounts.map(a => {
+        if (a.id === tx.accountId) {
+          if (tx.type === 'INCOME') return { ...a, balance: a.balance - tx.amount };
+          if (tx.type === 'EXPENSE') {
+            if (a.type === 'CREDIT_CARD') return { ...a, balance: a.balance - tx.amount };
+            return { ...a, balance: a.balance + tx.amount };
+          }
+        }
+        return a;
+      });
+
+      state.transactions = state.transactions.filter(t => t.id !== id);
+      saveData(state);
+      renderCurrentView();
+    }
+
+    // AI Natural Language Parser
+    function handleAISubmit(e) {
+      e.preventDefault();
+      const inp = document.getElementById('ai-input');
+      const text = inp.value.trim();
+      if (!text) return;
+      inp.value = '';
+
+      const chatBox = document.getElementById('ai-chat-box');
+      chatBox.innerHTML += `<div style="align-self: flex-end; background: var(--gold-500); color: #040711; font-weight: 700; border-radius: 0.75rem; padding: 0.65rem 0.85rem; font-size: 0.75rem; max-width: 80%;">${text}</div>`;
+
+      // Natural language detection
+      setTimeout(() => {
+        const lower = text.toLowerCase();
+        const amtMatch = lower.match(/(?:₹|rs\.?|inr)?\s*([0-9]+(?:,[0-9]{3})*(?:\.[0-9]+)?)/);
+        const amt = amtMatch ? parseFloat(amtMatch[1].replace(/,/g, '')) : 0;
+
+        if (amt > 0 && (lower.includes('spent') || lower.includes('paid') || lower.includes('expense') || lower.includes('petrol') || lower.includes('food') || lower.includes('lunch') || lower.includes('dinner'))) {
+          // Log expense
+          const acc = state.accounts.find(a => lower.includes(a.name.toLowerCase())) || state.accounts[0];
+          state.transactions.unshift({
+            id: Date.now(),
+            accountId: acc.id,
+            type: 'EXPENSE',
+            amount: amt,
+            payee: text,
+            date: new Date().toISOString().split('T')[0],
+            mode: 'UPI'
+          });
+          acc.balance -= amt;
+          saveData(state);
+          chatBox.innerHTML += `<div style="background: var(--navy-950); border: 1px solid var(--emerald-400); border-radius: 0.75rem; padding: 0.85rem; font-size: 0.75rem; color: #fff;">✅ <strong>Expense Recorded!</strong><br>• Amount: ${formatINR(amt)}<br>• Account: ${acc.name}<br>Your Net Worth & Balances updated!</div>`;
+          chatBox.scrollTop = chatBox.scrollHeight;
+          return;
+        }
+
+        const fin = getFinancials();
+        chatBox.innerHTML += `<div style="background: var(--navy-950); border: 1px solid var(--navy-700); border-radius: 0.75rem; padding: 0.85rem; font-size: 0.75rem; color: #fff;">Sameer, your current Net Worth is <strong>${formatINR(fin.netWorth)}</strong> and liquid funds are <strong>${formatINR(fin.liquid)}</strong>.</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 300);
+    }
+
+    function handleTransferSubmit(e) {
+      e.preventDefault();
+      const srcId = Number(document.getElementById('transfer-src').value);
+      const dstId = Number(document.getElementById('transfer-dst').value);
+      const amt = Number(document.getElementById('transfer-amt').value);
+      const notes = document.getElementById('transfer-notes').value;
+
+      if (srcId === dstId) return alert('Source and Destination must be different accounts');
+      state.accounts = state.accounts.map(a => {
+        if (a.id === srcId) return { ...a, balance: a.balance - amt };
+        if (a.id === dstId) return { ...a, balance: a.balance + amt };
+        return a;
+      });
+
+      state.transactions.unshift({
+        id: Date.now(),
+        accountId: srcId,
+        destAccountId: dstId,
+        type: 'TRANSFER',
+        amount: amt,
+        payee: 'Account Transfer',
+        notes: notes || 'Internal Transfer',
+        date: new Date().toISOString().split('T')[0],
+        mode: 'Transfer'
+      });
+
+      saveData(state);
+      alert('Internal Transfer completed with zero double counting!');
+      renderCurrentView();
+    }
+
+    function payRecurringBill(id) {
+      const b = state.recurring.find(r => r.id === id);
+      if (!b) return;
+      state.accounts[0].balance -= b.amount;
+      state.transactions.unshift({
+        id: Date.now(),
+        accountId: state.accounts[0].id,
+        type: 'EXPENSE',
+        amount: b.amount,
+        payee: b.title,
+        notes: `Recurring payment for ${b.title}`,
+        date: new Date().toISOString().split('T')[0],
+        mode: 'AutoPay'
+      });
+      saveData(state);
+      alert(`Paid ${b.title} (${formatINR(b.amount)}) and recorded expense!`);
+      renderCurrentView();
+    }
+
+    function resetData() {
+      if (confirm('Reset to default demonstration dataset for SAMEER?')) {
+        localStorage.removeItem('sameer_money_data');
+        state = loadData();
+        renderCurrentView();
+      }
+    }
+
+    // Initial render
+    renderCurrentView();
+  </script>
+</body>
+</html>
